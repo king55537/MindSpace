@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scenes/base/base.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://content/map/lunar/lunar_map_world.tscn" id="2_world"]
 [ext_resource type="PackedScene" path="res://content/entities/astronaut/astronaut.tscn" id="3_astronaut"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu/pause_menu.tscn" id="4_pause"]
 
 [node name="Base" type="Node2D"]
 script = ExtResource("1_script")
@@ -10,3 +11,5 @@ script = ExtResource("1_script")
 [node name="LunarMapWorld" parent="." instance=ExtResource("2_world")]
 
 [node name="Astronaut" parent="." instance=ExtResource("3_astronaut")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_pause")]

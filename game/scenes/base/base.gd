@@ -30,8 +30,35 @@ func _ready() -> void:
 	_camera.limit_bottom = world_size.y
 	_camera.make_current()
 
+	if SaveManager.has_pending_load():
+		_restore_saved_run()
+		return
+
 	GameSim.start_run()
 	GameSim.state.is_outside = true
+
+
+## Adopts the pending save instead of starting a clean run: simulation state,
+## ledger, astronaut position and clock. A saved run that was already over
+## keeps the clock paused. The pending state is cleared so re-entering the scene
+## cannot apply the same save twice.
+func _restore_saved_run() -> void:
+	var restored: SimState = SaveManager.get_pending_state()
+	if restored == null:
+		GameSim.start_run()
+		GameSim.state.is_outside = true
+		return
+
+	GameSim.load_state(restored, SaveManager.get_pending_speed())
+	EventLog.restore(SaveManager.get_pending_ledger())
+
+	var saved_position: Vector2 = SaveManager.get_pending_player_position()
+	if saved_position != Vector2.ZERO:
+		_astronaut.position = saved_position
+
+	SaveManager.clear_pending()
+	GameSim.state.is_outside = true
+	GameSim.set_paused(restored.game_over)
 
 
 ## Freezes the clock and clears the exterior flag when the playable scene is
