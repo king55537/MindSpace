@@ -44,11 +44,19 @@ Inside `game/`:
 
 ## Controls
 
-<!-- TODO: List the controls once they exist. -->
-
 | Action | Input |
 | --- | --- |
-| — | — |
+| Move | WASD or arrow keys |
+| Interact with a machine | E |
+| Pick up / place an inventory item | Left click |
+| Cancel the held item | Right click |
+| Select an inventory slot | 1-5 or mouse wheel |
+| Pause / resume | Space |
+| Change time speed (x1 / x5 / x10) | + / - |
+| Reopen the Mission Control guide | H |
+
+The first run starts with a short Mission Control guide that pauses the clock;
+it can be reopened at any time with **H** or the **HELP** button.
 
 ## License
 
