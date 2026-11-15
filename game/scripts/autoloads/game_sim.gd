@@ -22,6 +22,9 @@ var speed: Speed = Speed.X1
 ## The clock boots frozen: menus and the intro must never advance ticks before
 ## a playable scene calls start_run().
 var paused: bool = true
+## True only between start_run() and stop_run(): menus and non-playable scenes
+## keep it false, so a save request can tell a live run from a menu.
+var run_active: bool = false
 
 var _economy: EconomyData = null
 var _machines: MachineDatabase = null
@@ -89,12 +92,14 @@ func new_game() -> void:
 ## Starts a playable run: resets the simulation and then enables the clock.
 func start_run() -> void:
 	new_game()
+	run_active = true
 	paused = false
 
 
 ## Freezes the clock and leaves the exterior state when the playable scene ends,
 ## so no later scene keeps consuming resources or radiation.
 func stop_run() -> void:
+	run_active = false
 	paused = true
 	state.is_outside = false
 
@@ -113,6 +118,31 @@ func set_paused(value: bool) -> void:
 
 func is_paused() -> bool:
 	return paused
+
+
+## Adopts a restored state as the current run. The clock and the accumulator
+## stay frozen until the playable scene enables the clock explicitly, so a load
+## never consumes ticks on its own. The speed is the integer stored by the save
+## file (0 = x1, 1 = x5, 2 = x10).
+func load_state(restored: SimState, restored_speed: int = 0) -> void:
+	if restored == null:
+		return
+	state = restored
+	_time_accumulator = 0.0
+	speed = _speed_from_value(restored_speed)
+	run_active = true
+	paused = true
+
+
+## Maps a saved speed index to the runtime enum; unknown values fall back to x1.
+func _speed_from_value(value: int) -> Speed:
+	match value:
+		1:
+			return Speed.X5
+		2:
+			return Speed.X10
+		_:
+			return Speed.X1
 
 
 ## Real seconds the accumulator gains per second of wall clock.

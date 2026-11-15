@@ -1,0 +1,129 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Theme" path="res://themes/pixel_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://scenes/ui/pause_menu/pause_menu.gd" id="2_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.058824, 0.090196, 0.121569, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.290196, 0.658824, 0.705882, 1)
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 5
+script = ExtResource("2_script")
+
+[node name="Root" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.019608, 0.027451, 0.043137, 0.78)
+mouse_filter = 2
+
+[node name="Center" type="CenterContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_theme")
+
+[node name="Panel" type="PanelContainer" parent="Root/Center"]
+custom_minimum_size = Vector2(384, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="Root/Center/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="Column" type="VBoxContainer" parent="Root/Center/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Root/Center/Panel/Margin/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.87451, 0.909804, 0.941176, 1)
+theme_override_colors/font_shadow_color = Color(0.058824, 0.090196, 0.121569, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 32
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Root/Center/Panel/Margin/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.490196, 0.54902, 0.639216, 1)
+theme_override_font_sizes/font_size = 8
+text = "MISSION ON HOLD"
+horizontal_alignment = 1
+
+[node name="Rule" type="ColorRect" parent="Root/Center/Panel/Margin/Column"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.290196, 0.658824, 0.705882, 1)
+
+[node name="Spacer" type="Control" parent="Root/Center/Panel/Margin/Column"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="ResumeButton" type="Button" parent="Root/Center/Panel/Margin/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Continue"
+
+[node name="SettingsButton" type="Button" parent="Root/Center/Panel/Margin/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Settings"
+
+[node name="SaveExitButton" type="Button" parent="Root/Center/Panel/Margin/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 44)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save & exit"
+
+[node name="Toast" type="Label" parent="Root/Center/Panel/Margin/Column"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(320, 22)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.760784, 0.352941, 1)
+theme_override_font_sizes/font_size = 8
+text = ""
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Hint" type="Label" parent="Root/Center/Panel/Margin/Column"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.490196, 0.54902, 0.639216, 1)
+theme_override_font_sizes/font_size = 8
+text = "ESC - RESUME"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Root/Center/Panel/Margin/Column/ResumeButton" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Root/Center/Panel/Margin/Column/SettingsButton" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Root/Center/Panel/Margin/Column/SaveExitButton" to="." method="_on_save_exit_pressed"]

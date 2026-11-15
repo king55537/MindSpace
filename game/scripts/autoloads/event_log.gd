@@ -74,6 +74,21 @@ func reset() -> void:
 	_entries.clear()
 
 
+## Replaces the ledger with restored entries without emitting fact_logged, so a
+## load does not replay every fact as if it had just happened. Invalid entries
+## are skipped.
+func restore(entries: Array[LogEntry]) -> void:
+	_entries.clear()
+	for entry: LogEntry in entries:
+		if entry == null:
+			continue
+		if not LogEntry.is_valid_type(entry.type):
+			continue
+		if not LogEntry.is_plain_payload(entry.payload):
+			continue
+		_entries.append(_copy_entry(entry))
+
+
 ## Defensive copy of one entry. The payload is deep-copied as well, so nested
 ## arrays and dictionaries are not shared with the ledger.
 func _copy_entry(entry: LogEntry) -> LogEntry:
